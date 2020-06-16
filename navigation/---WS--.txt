@@ -1,0 +1,29 @@
+---WS--
+auth 810
+productos 810 
+agregarProducto 810
+eliminar productos 810
+confirmar pedido 810
+agregar direccion 810
+cancelar orden 810
+comentarios 810
+
+---Database design and deployment--- 810
+---Ws deplyment and configuration--- 810
+
+---AppStore deploy--- 810
+---Android Store Deploy--- 810
+
+---App Design---
+Configuración Iconos 810
+SplashScreem 810
+Lista de productos 810
+Detalle de producto 810
+Product List 810
+Carrito compras (Confirmar Carrito) 810
+Identificar usuario 810
+agregar comentarios 810
+
+
+
+

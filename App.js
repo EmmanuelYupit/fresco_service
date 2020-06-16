@@ -1,26 +1,38 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import * as React from "react";
+import { Platform, StatusBar, StyleSheet, View } from "react-native";
 
-import useCachedResources from './hooks/useCachedResources';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import LinkingConfiguration from './navigation/LinkingConfiguration';
+import useCachedResources from "./hooks/useCachedResources";
+import BottomTabNavigator from "./navigation/BottomTabNavigator";
+import LinkingConfiguration from "./navigation/LinkingConfiguration";
+import ProductDetail from "./screens/ProductDetail";
+import Deliver from "./screens/DeliverInfo";
 
 const Stack = createStackNavigator();
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
-
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      //primary: "#E9F0C1",
+      background: "#E9F0C1",
+      card: "#E9F0C1",
+      border: "rgb(199, 199, 204)",
+    },
+  };
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
       <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-        <NavigationContainer linking={LinkingConfiguration}>
+        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
+        <NavigationContainer linking={LinkingConfiguration} theme={MyTheme}>
           <Stack.Navigator>
             <Stack.Screen name="Root" component={BottomTabNavigator} />
+            <Stack.Screen name="Detail" component={ProductDetail} />
+            <Stack.Screen name="Deliver" component={Deliver} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
@@ -31,6 +43,6 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#E9F0C1",
   },
 });
