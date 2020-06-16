@@ -18,7 +18,6 @@ export default function ProductDetail() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <View style={{ height: 20 }} />
-      <Text style={{ fontSize: 28, color: "gray" }}>Cart food</Text>
       <View style={{ height: 10 }} />
 
       <View style={{ flex: 1 }}>
@@ -28,17 +27,13 @@ export default function ProductDetail() {
             margin: 10,
             backgroundColor: "transparent",
             flexDirection: "row",
-            borderBottomWidth: 2,
             borderColor: "#cccccc",
-            paddingBottom: 10,
           }}
         >
           <Image
             resizeMode={"contain"}
-            style={{ width: width / 3, height: width / 3 }}
-            source={{
-              uri: "http://tutofox.com/foodapp/food/pizza/pizza-1.png",
-            }}
+            style={{ width: width / 2, height: width / 3 }}
+            source={require("../assets/images/products/aguacate.png")}
           />
           <View
             style={{
@@ -49,36 +44,63 @@ export default function ProductDetail() {
             }}
           >
             <View>
-              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                Jitomate Saladdete
-              </Text>
-              <Text>extra description</Text>
-            </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <Text
-                style={{ fontWeight: "bold", color: "#9fd236", fontSize: 20 }}
-              >
-                $565
-              </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity>
-                  <Icon name="ios-remove-circle" size={30} color={"#9fd236"} />
-                </TouchableOpacity>
-                <Text style={{ paddingHorizontal: 8, fontWeight: "bold" }}>
-                  5
-                </Text>
-                <TouchableOpacity>
-                  <Icon name="ios-add-circle" size={30} color={"#9fd236"} />
-                </TouchableOpacity>
-              </View>
+              <Text style={{ fontWeight: "bold", fontSize: 40 }}>$15</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>el kilo</Text>
             </View>
           </View>
         </View>
-      </View>
+        <View
+          style={{
+            width: width - 20,
+            margin: 10,
+            backgroundColor: "transparent",
+            flexDirection: "row",
+            paddingBottom: 10,
+          }}
+        >
+          <Text
+            style={{ fontWeight: "bold", fontSize: 30, textAlign: "center" }}
+          >
+            Jitomate Saladette de primera
+          </Text>
+        </View>
+        <View
+          style={{
+            alignItems: "center",
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity>
+              <Icon name="ios-remove-circle" size={40} color={"#9fd236"} />
+            </TouchableOpacity>
+            <Text
+              style={{
+                paddingHorizontal: 8,
+                fontWeight: "bold",
+                fontSize: 30,
+              }}
+            >
+              5 kilos
+            </Text>
+            <TouchableOpacity>
+              <Icon name="ios-add-circle" size={40} color={"#9fd236"} />
+            </TouchableOpacity>
+          </View>
+        </View>
 
-      <View style={{ height: 20 }} />
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: "#9fd236",
+              fontSize: 40,
+              alignItems: "center",
+            }}
+          >
+            $565 Total
+          </Text>
+        </View>
+      </View>
 
       <TouchableOpacity
         style={{
@@ -96,7 +118,7 @@ export default function ProductDetail() {
             color: "white",
           }}
         >
-          CHECKOUT
+          Agregar al carrito
         </Text>
       </TouchableOpacity>
 

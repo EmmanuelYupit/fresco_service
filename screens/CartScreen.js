@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
+
 import {
   StyleSheet,
   Text,
@@ -9,73 +10,91 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { RectButton, ScrollView } from "react-native-gesture-handler";
+import { RectButton, ScrollView, FlatList } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const { height, width } = Dimensions.get("window");
 
 export default function CartScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <View style={{ height: 20 }} />
-      <Text style={{ fontSize: 28, color: "gray" }}>Cart food</Text>
-      <View style={{ height: 10 }} />
-
-      <View style={{ flex: 1 }}>
+  const [products, setProducts] = React.useState([
+    {
+      id: 1,
+      src: require("../assets/images/products/aguacate.png"),
+      name: "Aguacate",
+      price: 25.5,
+    },
+    {
+      id: 2,
+      src: require("../assets/images/products/aguacate.png"),
+      name: "Limon",
+      price: 10.5,
+    },
+    {
+      id: 3,
+      src: require("../assets/images/products/aguacate.png"),
+      name: "Cebolla Morada",
+      price: 25.5,
+    },
+  ]);
+  function _renderItemFood(item) {
+    return (
+      <TouchableOpacity
+        style={{
+          width: width - 20,
+          margin: 10,
+          backgroundColor: "transparent",
+          flexDirection: "row",
+          borderBottomWidth: 2,
+          borderColor: "#cccccc",
+          paddingBottom: 10,
+        }}
+      >
+        <Image
+          resizeMode={"contain"}
+          style={{ width: width / 3, height: width / 3 }}
+          source={require("../assets/images/products/aguacate.png")}
+        />
         <View
           style={{
-            width: width - 20,
-            margin: 10,
+            flex: 1,
             backgroundColor: "transparent",
-            flexDirection: "row",
-            borderBottomWidth: 2,
-            borderColor: "#cccccc",
-            paddingBottom: 10,
+            padding: 10,
+            justifyContent: "space-between",
           }}
         >
-          <Image
-            resizeMode={"contain"}
-            style={{ width: width / 3, height: width / 3 }}
-            source={{
-              uri: "http://tutofox.com/foodapp/food/pizza/pizza-1.png",
-            }}
-          />
+          <View>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+              {item.name}
+            </Text>
+            <Text>Descripcion de food</Text>
+          </View>
           <View
-            style={{
-              flex: 1,
-              backgroundColor: "transparent",
-              padding: 10,
-              justifyContent: "space-between",
-            }}
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <View>
-              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                Titulo de producto
-              </Text>
-              <Text>Descripcion de food</Text>
-            </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            <Text
+              style={{ fontWeight: "bold", color: "#9fd236", fontSize: 20 }}
             >
-              <Text
-                style={{ fontWeight: "bold", color: "#9fd236", fontSize: 20 }}
-              >
-                $565
+              $565
+            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={{ paddingHorizontal: 8, fontWeight: "bold" }}>
+                5 kilos
               </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity>
-                  <Icon name="ios-remove-circle" size={30} color={"#9fd236"} />
-                </TouchableOpacity>
-                <Text style={{ paddingHorizontal: 8, fontWeight: "bold" }}>
-                  5
-                </Text>
-                <TouchableOpacity>
-                  <Icon name="ios-add-circle" size={30} color={"#9fd236"} />
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
         </View>
+      </TouchableOpacity>
+    );
+  }
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={{ flex: 1 }}>
+        <FlatList
+          //horizontal={true}
+          data={products}
+          numColumns={1}
+          renderItem={({ item }) => _renderItemFood(item)}
+        />
       </View>
 
       <View style={{ height: 20 }} />
@@ -97,7 +116,7 @@ export default function CartScreen({ navigation }) {
             color: "white",
           }}
         >
-          CHECKOUT
+          COMPRAR $500
         </Text>
       </TouchableOpacity>
 
