@@ -32,7 +32,7 @@ export default function App(props) {
           <Stack.Navigator>
             <Stack.Screen name="Root" component={BottomTabNavigator} />
             <Stack.Screen name="Detail" component={ProductDetail} />
-            <Stack.Screen name="Deliver" component={Deliver} />
+            <Stack.Screen name="Información de entrega" component={Deliver} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

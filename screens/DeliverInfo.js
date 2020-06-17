@@ -16,23 +16,11 @@ import {
 } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
 //import t from "tco";
+import BracketForm from "../components/directionForm/BracketForm";
 const { height, width } = Dimensions.get("window");
 
-/*const Form = t.form.Form;
-
-const User = t.struct({
-  email: t.String,
-  username: t.String,
-  password: t.String,
-  terms: t.Boolean,
-});*/
 export default function Deliver() {
-  const [value, onChangeText] = React.useState("Useless Placeholder");
-  return (
-    <View style={styles.container}>
-      <Form type={User} /> {/* Notice the addition of the Form component */}
-    </View>
-  );
+  return <BracketForm />;
 }
 
 const styles = StyleSheet.create({

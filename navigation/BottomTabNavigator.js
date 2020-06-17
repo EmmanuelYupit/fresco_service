@@ -3,9 +3,8 @@ import * as React from "react";
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
-import LinksScreen from "../screens/LinksScreen";
 import CartScreen from "../screens/CartScreen";
-import ProductDetail from "../screens/ProductDetail";
+import OrderStateScreen from "../screens/OrderStateScreen";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Home";
@@ -20,7 +19,7 @@ export default function BottomTabNavigator({ navigation, route }) {
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
-        name="Products"
+        name="Productos"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -39,8 +38,8 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="Links"
-        component={LinksScreen}
+        name="OrderState"
+        component={OrderStateScreen}
         options={{
           title: "Orden",
           tabBarIcon: ({ focused }) => (
@@ -63,5 +62,7 @@ function getHeaderTitle(route) {
       return "Cart";
     case "ProductDetail":
       return "ProductDetail";
+    case "OrderState":
+      return "Estao de la orden";
   }
 }

@@ -38,7 +38,7 @@ export default function CartScreen({ navigation }) {
   ]);
   function _renderItemFood(item) {
     return (
-      <TouchableOpacity
+      <View
         style={{
           width: width - 20,
           margin: 10,
@@ -83,7 +83,7 @@ export default function CartScreen({ navigation }) {
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
   return (
@@ -100,7 +100,7 @@ export default function CartScreen({ navigation }) {
       <View style={{ height: 20 }} />
 
       <TouchableOpacity
-        onPress={() => navigation.push("Deliver")}
+        onPress={() => navigation.push("Información de entrega")}
         style={{
           backgroundColor: "#9fd236",
           width: width - 40,
