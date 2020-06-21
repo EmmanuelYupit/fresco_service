@@ -1,6 +1,6 @@
 import * as WebBrowser from "expo-web-browser";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Image,
   Platform,
@@ -11,6 +11,7 @@ import {
   FlatList,
   Dimensions,
   Button,
+  RefreshControl,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -20,42 +21,69 @@ import { createStackNavigator } from "@react-navigation/stack";
 const width = Dimensions.get("window").width;
 
 export default function HomeScreen({ navigation }) {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      src: require("../assets/images/products/aguacate.png"),
-      name: "Aguacate",
-      price: 25.5,
-    },
-    {
-      id: 2,
-      src: require("../assets/images/products/aguacate.png"),
-      name: "Limon",
-      price: 10.5,
-    },
-    {
-      id: 3,
-      src: require("../assets/images/products/aguacate.png"),
-      name: "Cebolla Morada",
-      price: 25.5,
-    },
-    {
-      id: 4,
-      src: require("../assets/images/products/aguacate.png"),
+  const [products, setProducts] = useState([]);
+  function wait(timeout) {
+    axios
+      .get("http://192.168.0.4:3000/api/v1/product")
+      .then((res) => {
+        setProducts(res.data);
+        return "s";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  useEffect(() => {
+    console.log("--------------------------");
+    console.log("--------------------------");
+    console.log("--------------------------");
+    console.log("--------------------------");
+    console.log("--------------------------");
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+      setRefreshing(true);
+      const result = axios
+        .get("http://192.168.0.4:3000/api/v1/product")
+        .then((res) => {
+          setProducts(res.data);
+          setRefreshing(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setRefreshing(false);
+        });
+    });
+    const result = axios
+      .get("http://192.168.0.4:3000/api/v1/product")
+      .then((res) => {
+        setProducts(res.data);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRefreshing(false);
+      });
+  }, []);
+  const [refreshing, setRefreshing] = React.useState(false);
 
-      name: "Calabaza",
-      price: 25.5,
-    },
-    {
-      id: 5,
-      src: require("../assets/images/products/aguacate.png"),
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
 
-      name: "Zanahoria",
-      price: 7.5,
-    },
-  ]);
+    const result = axios
+      .get("http://192.168.0.4:3000/api/v1/product")
+      .then((res) => {
+        setProducts(res.data);
+        setRefreshing(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRefreshing(false);
+      });
+  }, [refreshing]);
 
   function _renderItemFood(item) {
+    console.log(item);
     return (
       <TouchableOpacity
         style={styles.divFood}
@@ -77,16 +105,23 @@ export default function HomeScreen({ navigation }) {
           {item.name}
         </Text>
         <Text style={{ fontSize: 15, textAlign: "center" }}>
-          Descp Food and Details
+          {item.description.substring(0, 18)}...
         </Text>
-        <Text style={{ fontSize: 20, color: "green" }}>${item.price}</Text>
+        <Text style={{ fontSize: 20, color: "green" }}>
+          ${item.prices[0].price}
+        </Text>
       </TouchableOpacity>
     );
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.welcomeContainer}>
+      <ScrollView
+        style={styles.welcomeContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <FlatList
           //horizontal={true}
           data={products}
@@ -94,7 +129,7 @@ export default function HomeScreen({ navigation }) {
           renderItem={({ item }) => _renderItemFood(item)}
           keyExtractor={(item, index) => index.toString()}
         />
-      </View>
+      </ScrollView>
 
       <View style={styles.tabBarInfoContainer}></View>
     </View>
@@ -126,18 +161,6 @@ function DevelopmentModeNotice() {
       </Text>
     );
   }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    "https://docs.expo.io/versions/latest/workflow/development-mode/"
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    "https://docs.expo.io/versions/latest/get-started/create-a-new-app/#making-your-first-change"
-  );
 }
 
 const styles = StyleSheet.create({

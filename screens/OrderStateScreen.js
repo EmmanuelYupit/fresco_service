@@ -8,7 +8,7 @@ import { Card, Paragraph, Title, Button } from "react-native-paper";
 export default function OrderStateScreen() {
   return (
     <Card>
-      <Card.Content backgroundColor="">
+      <Card.Content backgroundColor="#E9F0C1">
         <Title
           style={{
             textAlign: "center",
@@ -35,6 +35,21 @@ export default function OrderStateScreen() {
         >
           Cancelar
         </Button>
+
+        <Text
+          style={{
+            fontSize: 24,
+            textAlign: "center",
+            paddingBottom: 10,
+            marginTop: 20,
+            borderRadius: 10,
+            backgroundColor: "#f8f9fa",
+          }}
+        >
+          Incididunt sunt magna est tempor qui consequat. Est labore non ea non.
+          Enim duis amet dolore id. Et officia ullamco nostrud sit nisi
+          consectetur est ipsum ex. Occaecat aliqua fugiat consequat veniam.
+        </Text>
       </Card.Content>
     </Card>
   );

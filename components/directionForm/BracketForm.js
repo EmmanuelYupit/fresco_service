@@ -10,7 +10,6 @@ export default function BracketForm() {
       }}
       onSubmit={async (values) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        alert(JSON.stringify(values));
       }}
     >
       <BracketFormBody />

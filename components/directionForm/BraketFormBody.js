@@ -14,6 +14,7 @@ export default function BracketFormBody() {
         <FormTextInput fieldName="postalCode" placeholder="Código Postal" />
         <FormTextInput fieldName="" placeholder="Delegación" />
         <FormTextInput fieldName="name" placeholder="Dirección" />
+        <FormTextInput fieldName="name" placeholder="Referencia" />
         <FormTextInput fieldName="name" placeholder="Teléfono" />
         <FormTextInput fieldName="name" placeholder="Nombre" />
       </View>
