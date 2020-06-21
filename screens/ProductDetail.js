@@ -15,6 +15,22 @@ import Icon from "react-native-vector-icons/Ionicons";
 const { height, width } = Dimensions.get("window");
 
 export default function ProductDetail() {
+  const [product, setProduct] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      const result = axios
+        .get("http://192.168.0.4:3000/api/v1/product")
+        .then((res) => {
+          setProduct(res.data);
+          setRefreshing(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setRefreshing(false);
+        });
+    });
+  });
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <View style={{ height: 20 }} />
