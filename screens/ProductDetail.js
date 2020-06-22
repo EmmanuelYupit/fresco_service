@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
+import axios from "axios";
 import {
   StyleSheet,
   Text,
@@ -9,28 +10,42 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
+import productImage from "../components/product/Image";
 
 const { height, width } = Dimensions.get("window");
+export default function ProductDetail({ navigation }) {
+  const [product, setProduct] = React.useState({
+    price: "Loading..",
+    description: "Loading..",
+    product: {
+      imageUrl: require("../assets/images/products/aguacate.png"),
+    },
+  });
 
-export default function ProductDetail() {
-  const [product, setProduct] = useState([]);
-
-  useEffect(() => {
+  React.useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       const result = axios
-        .get("http://192.168.0.4:3000/api/v1/product")
+        .get("http://192.168.0.4:3000/api/v1/product/1")
         .then((res) => {
+          //const imageUrl = `../assets/images/products/${res.data.product.imageUrl}.png`;
+          //res.data.product.imageUrl = require({ uri: imageUrl });
+          //setRefreshing(false);
+          res.data.product.imageUrl = require("../assets/images/products/aguacate.png");
+          console.log("aaa");
+          console.log(res.data.product.imageUrl);
           setProduct(res.data);
-          setRefreshing(false);
         })
         .catch((err) => {
           console.log(err);
+          alert("sssss");
           setRefreshing(false);
         });
     });
   });
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <View style={{ height: 20 }} />
@@ -49,7 +64,7 @@ export default function ProductDetail() {
           <Image
             resizeMode={"contain"}
             style={{ width: width / 2, height: width / 3 }}
-            source={require("../assets/images/products/aguacate.png")}
+            source={productImage(item.imageUrl)}
           />
           <View
             style={{
@@ -60,8 +75,12 @@ export default function ProductDetail() {
             }}
           >
             <View>
-              <Text style={{ fontWeight: "bold", fontSize: 40 }}>$15</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 20 }}>el kilo</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 40 }}>
+                ${product.price}
+              </Text>
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                {product.unitType}
+              </Text>
             </View>
           </View>
         </View>
@@ -77,7 +96,7 @@ export default function ProductDetail() {
           <Text
             style={{ fontWeight: "bold", fontSize: 30, textAlign: "center" }}
           >
-            Jitomate Saladette de primera
+            ${product.product.description}
           </Text>
         </View>
         <View

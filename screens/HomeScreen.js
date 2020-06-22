@@ -14,7 +14,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-
+import productImage from "../components/product/Image.js";
 import { MonoText } from "../components/StyledText";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -22,16 +22,7 @@ const width = Dimensions.get("window").width;
 
 export default function HomeScreen({ navigation }) {
   const [products, setProducts] = useState([]);
-  function wait() {
-    axios
-      .get("http://192.168.0.4:3000/api/v1/product")
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       // The screen is focused
@@ -48,16 +39,6 @@ export default function HomeScreen({ navigation }) {
           setRefreshing(false);
         });
     });
-    const result = axios
-      .get("http://192.168.0.4:3000/api/v1/product")
-      .then((res) => {
-        setProducts(res.data);
-        setRefreshing(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setRefreshing(false);
-      });
   }, []);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -67,6 +48,10 @@ export default function HomeScreen({ navigation }) {
     const result = axios
       .get("http://192.168.0.4:3000/api/v1/product")
       .then((res) => {
+        /*res.data.map((product) => {
+          console.log(product.imageUrl);
+          product.imageUrl = require(product.imageUrl);
+        });*/
         setProducts(res.data);
         setRefreshing(false);
       })
@@ -86,7 +71,7 @@ export default function HomeScreen({ navigation }) {
         <Image
           style={styles.imageFood}
           resizeMode="contain"
-          source={item.src}
+          source={productImage(item.imageUrl)}
         />
         <View
           style={{
