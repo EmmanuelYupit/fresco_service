@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     StyleSheet,
@@ -9,6 +9,7 @@ import {
     Dimensions,
     Image,
     TouchableOpacity,
+    ActivityIndicator,
 } from 'react-native';
 
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
@@ -16,33 +17,24 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import productImage from '../components/product/Image';
 
 const { height, width } = Dimensions.get('window');
-export default function ProductDetail({ navigation }) {
-    const [detail, setDetail] = React.useState({});
+export default function ProductDetail({ route, navigation }) {
+    const { productId } = route.params;
+    const [detail, setDetail] = useState({});
+    const [isLoading, setLoading] = useState(true);
 
-    React.useEffect(async () => {
-        let { data } = await axios.get(
-            'https://fresco.herokuapp.com/api/v1/product/1'
-        );
-        // data.product.imageUrl = require('../assets/images/products/aguacate.png');
-        setDetail(data);
-        console.log('====================================');
-        console.log(detail);
-        console.log('====================================');
-        // const unsubscribe = navigation.addListener('focus', () => {
-        //     const result = axios
-        //         .get('https://fresco.herokuapp.com/api/v1/product/1')
-        //         .then((res) => {
-        //             res.data.detail.imageUrl = require('../assets/images/products/aguacate.png');
-        //             console.log(res.data.detail.imageUrl);
-        //             setProduct(res.data);
-        //         })
-        //         .catch((err) => {
-        //             console.log(err);
-        //             alert('sssss');
-        //             setRefreshing(false);
-        //         });
-        // });
+    useEffect(() => {
+        getDetail();
     }, []);
+
+    async function getDetail() {
+        setLoading(true);
+        const { data } = await axios.get(
+            `https://fresco.herokuapp.com/api/v1/product/${productId}`
+        );
+
+        setDetail(data);
+        setLoading(false);
+    }
 
     return (
         <View
@@ -50,128 +42,154 @@ export default function ProductDetail({ navigation }) {
         >
             <View style={{ height: 20 }} />
             <View style={{ height: 10 }} />
-
-            <View style={{ flex: 1 }}>
+            {isLoading ? (
                 <View
                     style={{
-                        width: width - 20,
-                        margin: 10,
-                        backgroundColor: 'transparent',
-                        flexDirection: 'row',
-                        borderColor: '#cccccc',
-                    }}
-                >
-                    <Image
-                        resizeMode={'contain'}
-                        style={{ width: width / 2, height: width / 3 }}
-                        source={productImage('jitomate')}
-                    />
-                    <View
-                        style={{
-                            flex: 1,
-                            backgroundColor: 'transparent',
-                            padding: 10,
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <View>
-                            <Text style={{ fontWeight: 'bold', fontSize: 40 }}>
-                                ${detail.price}
-                            </Text>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                                {detail.unitType}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-                <View
-                    style={{
-                        width: width - 20,
-                        margin: 10,
-                        backgroundColor: 'transparent',
-                        flexDirection: 'row',
-                        paddingBottom: 10,
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontWeight: 'bold',
-                            fontSize: 30,
-                            textAlign: 'center',
-                        }}
-                    >
-                        {/* ${detail.product.description} */}
-                    </Text>
-                </View>
-                <View
-                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
-                    <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                    >
-                        <TouchableOpacity>
-                            <Icon
-                                name="ios-remove-circle"
-                                size={40}
-                                color={'#9fd236'}
-                            />
-                        </TouchableOpacity>
-                        <Text
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            ) : (
+                <>
+                    <View style={{ flex: 1 }}>
+                        <View
                             style={{
-                                paddingHorizontal: 8,
-                                fontWeight: 'bold',
-                                fontSize: 30,
+                                width: width - 20,
+                                margin: 10,
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                borderColor: '#cccccc',
                             }}
                         >
-                            5 kilos
-                        </Text>
-                        <TouchableOpacity>
-                            <Icon
-                                name="ios-add-circle"
-                                size={40}
-                                color={'#9fd236'}
+                            <Image
+                                resizeMode={'contain'}
+                                style={{ width: width / 2, height: width / 3 }}
+                                source={productImage(detail.product.imageUrl)}
                             />
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    backgroundColor: 'transparent',
+                                    padding: 10,
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <View>
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold',
+                                            fontSize: 40,
+                                        }}
+                                    >
+                                        ${detail.price}
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            fontWeight: 'bold',
+                                            fontSize: 20,
+                                        }}
+                                    >
+                                        {detail.unitType}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                width: width - 20,
+                                margin: 10,
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                                paddingBottom: 10,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontWeight: 'bold',
+                                    fontSize: 30,
+                                    textAlign: 'center',
+                                }}
+                            >
+                                {detail.product.description}
+                            </Text>
+                        </View>
+                        <View
+                            style={{
+                                alignItems: 'center',
+                            }}
+                        >
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <TouchableOpacity>
+                                    <Icon
+                                        name="ios-remove-circle"
+                                        size={40}
+                                        color={'#9fd236'}
+                                    />
+                                </TouchableOpacity>
+                                <Text
+                                    style={{
+                                        paddingHorizontal: 8,
+                                        fontWeight: 'bold',
+                                        fontSize: 30,
+                                    }}
+                                >
+                                    5 kilos
+                                </Text>
+                                <TouchableOpacity>
+                                    <Icon
+                                        name="ios-add-circle"
+                                        size={40}
+                                        color={'#9fd236'}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
 
-                <View style={{ alignItems: 'center' }}>
-                    <Text
+                        <View style={{ alignItems: 'center' }}>
+                            <Text
+                                style={{
+                                    fontWeight: 'bold',
+                                    color: '#9fd236',
+                                    fontSize: 40,
+                                    alignItems: 'center',
+                                }}
+                            >
+                                $565 Total
+                            </Text>
+                        </View>
+                    </View>
+
+                    <TouchableOpacity
                         style={{
-                            fontWeight: 'bold',
-                            color: '#9fd236',
-                            fontSize: 40,
+                            backgroundColor: '#9fd236',
+                            width: width - 40,
                             alignItems: 'center',
+                            padding: 10,
+                            borderRadius: 5,
                         }}
                     >
-                        $565 Total
-                    </Text>
-                </View>
-            </View>
+                        <Text
+                            style={{
+                                fontSize: 24,
+                                fontWeight: 'bold',
+                                color: 'white',
+                            }}
+                        >
+                            Agregar al carrito
+                        </Text>
+                    </TouchableOpacity>
 
-            <TouchableOpacity
-                style={{
-                    backgroundColor: '#9fd236',
-                    width: width - 40,
-                    alignItems: 'center',
-                    padding: 10,
-                    borderRadius: 5,
-                }}
-            >
-                <Text
-                    style={{
-                        fontSize: 24,
-                        fontWeight: 'bold',
-                        color: 'white',
-                    }}
-                >
-                    Agregar al carrito
-                </Text>
-            </TouchableOpacity>
-
-            <View style={{ height: 20 }} />
+                    <View style={{ height: 20 }} />
+                </>
+            )}
         </View>
     );
 }

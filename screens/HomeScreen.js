@@ -23,13 +23,20 @@ const width = Dimensions.get('window').width;
 export default function HomeScreen({ navigation }) {
     const [products, setProducts] = useState([]);
 
-    useEffect(async () => {
+    async function getProducts() {
         setRefreshing(true);
         const { data } = await axios.get(
             'https://fresco.herokuapp.com/api/v1/product'
         );
         setProducts(data);
         setRefreshing(false);
+    }
+
+    useEffect(() => {
+        getProducts();
+        return () => {
+            console.log('This will be logged on unmount');
+        };
     }, []);
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -49,11 +56,12 @@ export default function HomeScreen({ navigation }) {
     }, [refreshing]);
 
     function _renderItemFood(item) {
-        console.log(item);
+        const { id } = item;
+        // console.log(item);
         return (
             <TouchableOpacity
                 style={styles.divFood}
-                onPress={() => navigation.push('Detail')}
+                onPress={() => navigation.navigate('Detail', { productId: id })}
             >
                 <Image
                     style={styles.imageFood}
