@@ -21,6 +21,7 @@ export default function ProductDetail({ route, navigation }) {
     const { productId } = route.params;
     const [detail, setDetail] = useState({});
     const [isLoading, setLoading] = useState(true);
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         getDetail();
@@ -31,9 +32,14 @@ export default function ProductDetail({ route, navigation }) {
         const { data } = await axios.get(
             `https://fresco.herokuapp.com/api/v1/product/${productId}`
         );
-
         setDetail(data);
         setLoading(false);
+    }
+
+    function handleQuantity(action) {
+        setQuantity(
+            action === 'add' ? quantity + 1 : quantity > 1 ? quantity - 1 : 1
+        );
     }
 
     return (
@@ -127,7 +133,9 @@ export default function ProductDetail({ route, navigation }) {
                                     alignItems: 'center',
                                 }}
                             >
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => handleQuantity('substract')}
+                                >
                                     <Icon
                                         name="ios-remove-circle"
                                         size={40}
@@ -141,9 +149,11 @@ export default function ProductDetail({ route, navigation }) {
                                         fontSize: 30,
                                     }}
                                 >
-                                    5 kilos
+                                    {quantity} {quantity > 1 ? 'kilos' : 'kilo'}
                                 </Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => handleQuantity('add')}
+                                >
                                     <Icon
                                         name="ios-add-circle"
                                         size={40}
@@ -162,7 +172,7 @@ export default function ProductDetail({ route, navigation }) {
                                     alignItems: 'center',
                                 }}
                             >
-                                $565 Total
+                                ${quantity * detail.price} Total
                             </Text>
                         </View>
                     </View>
