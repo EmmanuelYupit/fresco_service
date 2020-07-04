@@ -16,6 +16,8 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import productImage from '../components/product/Image';
 
+import global from '../store/global';
+
 const { height, width } = Dimensions.get('window');
 export default function ProductDetail({ route, navigation }) {
     const { productId } = route.params;
@@ -41,6 +43,8 @@ export default function ProductDetail({ route, navigation }) {
             action === 'add' ? quantity + 1 : quantity > 1 ? quantity - 1 : 1
         );
     }
+
+    async function addToCart() {}
 
     return (
         <View

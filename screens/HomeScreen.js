@@ -1,6 +1,8 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../services/api';
+import global from '../store/global';
 import {
     Image,
     Platform,
@@ -15,22 +17,16 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import productImage from '../components/product/Image.js';
-import { MonoText } from '../components/StyledText';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+
 const width = Dimensions.get('window').width;
 
 export default function HomeScreen({ navigation }) {
     const [products, setProducts] = useState([]);
+    const [refreshing, setRefreshing] = React.useState(false);
 
-    async function getProducts() {
-        setRefreshing(true);
-        const { data } = await axios.get(
-            'https://fresco.herokuapp.com/api/v1/product'
-        );
-        setProducts(data);
-        setRefreshing(false);
-    }
+    const onRefresh = React.useCallback(() => {
+        getProducts();
+    }, [refreshing]);
 
     useEffect(() => {
         getProducts();
@@ -38,22 +34,13 @@ export default function HomeScreen({ navigation }) {
             console.log('This will be logged on unmount');
         };
     }, []);
-    const [refreshing, setRefreshing] = React.useState(false);
 
-    const onRefresh = React.useCallback(() => {
+    async function getProducts() {
         setRefreshing(true);
-
-        const result = axios
-            .get('https://fresco.herokuapp.com/api/v1/product')
-            .then((res) => {
-                setProducts(res.data);
-                setRefreshing(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                setRefreshing(false);
-            });
-    }, [refreshing]);
+        const { data } = await api.product.list();
+        setProducts(data);
+        setRefreshing(false);
+    }
 
     function _renderItemFood(item) {
         const { id } = item;

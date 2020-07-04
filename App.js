@@ -1,6 +1,6 @@
+import * as React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 
 import useCachedResources from './hooks/useCachedResources';
@@ -10,9 +10,13 @@ import ProductDetail from './screens/ProductDetail';
 import { Details } from './screens/Product';
 import Deliver from './screens/DeliverInfo';
 
+import useOrder from './store/use.order';
+import global from './store/global';
+
 const Stack = createStackNavigator();
 
 export default function App(props) {
+    global.order = useOrder();
     const isLoadingComplete = useCachedResources();
     const MyTheme = {
         ...DefaultTheme,
