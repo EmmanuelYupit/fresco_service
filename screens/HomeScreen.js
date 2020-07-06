@@ -1,6 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import api from '../services/api';
 import global from '../store/global';
 import {
@@ -35,16 +34,28 @@ export default function HomeScreen({ navigation }) {
         };
     }, []);
 
+    async function login() {
+        const {
+            data: { token },
+        } = await api.auth.signin();
+        global.auth.set(token);
+    }
+
     async function getProducts() {
         setRefreshing(true);
+        await login();
         const { data } = await api.product.list();
         setProducts(data);
         setRefreshing(false);
     }
 
+    console.log('====================================');
+    console.log('new order home: ', global.order.current);
+    console.log('token: ', global.auth.token);
+    console.log('====================================');
+
     function _renderItemFood(item) {
         const { id } = item;
-        // console.log(item);
         return (
             <TouchableOpacity
                 style={styles.divFood}

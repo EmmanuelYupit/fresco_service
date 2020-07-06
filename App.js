@@ -11,12 +11,14 @@ import { Details } from './screens/Product';
 import Deliver from './screens/DeliverInfo';
 
 import useOrder from './store/use.order';
+import useToken from './store/use.auth';
 import global from './store/global';
 
 const Stack = createStackNavigator();
 
 export default function App(props) {
     global.order = useOrder();
+    global.auth = useToken();
     const isLoadingComplete = useCachedResources();
     const MyTheme = {
         ...DefaultTheme,

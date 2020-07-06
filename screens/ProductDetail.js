@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import {
     StyleSheet,
     Text,
@@ -31,9 +31,7 @@ export default function ProductDetail({ route, navigation }) {
 
     async function getDetail() {
         setLoading(true);
-        const { data } = await axios.get(
-            `https://fresco.herokuapp.com/api/v1/product/${productId}`
-        );
+        const { data } = await api.product.byId(productId);
         setDetail(data);
         setLoading(false);
     }
@@ -44,7 +42,24 @@ export default function ProductDetail({ route, navigation }) {
         );
     }
 
-    async function addToCart() {}
+    async function addToCart() {
+        setLoading(true);
+        const params = {
+            amount: quantity,
+            productId,
+        };
+        try {
+            const { data } = await api.order.add(params);
+            global.order.set(data);
+            setLoading(false);
+            navigation.navigate('Productos');
+        } catch (err) {
+            console.log('====================================');
+            console.log(err);
+            console.log('====================================');
+            setLoading(false);
+        }
+    }
 
     return (
         <View
@@ -189,6 +204,7 @@ export default function ProductDetail({ route, navigation }) {
                             padding: 10,
                             borderRadius: 5,
                         }}
+                        onPress={() => addToCart()}
                     >
                         <Text
                             style={{
