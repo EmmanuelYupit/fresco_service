@@ -49,16 +49,34 @@ export default function ProductDetail({ route, navigation }) {
             productId,
         };
         try {
-            const { data } = await api.order.add(params);
-            global.order.set(data);
+            const order = await addOrCreate(params);
+            global.order.set(order);
             setLoading(false);
             navigation.navigate('Productos');
         } catch (err) {
-            console.log('====================================');
             console.log(err);
-            console.log('====================================');
             setLoading(false);
         }
+    }
+
+    async function addOrCreate(params) {
+        if (global.order.current.id) {
+            const orderId = global.order.current.id;
+            const { data } = await api.order.addProduct(orderId, params);
+            const {
+                order: { id },
+            } = data;
+            const order = await getOrder(id);
+            return order;
+        } else {
+            const { data } = await api.order.add(params);
+            return data;
+        }
+    }
+
+    async function getOrder(id) {
+        const { data } = await api.order.byId(id);
+        return data;
     }
 
     return (

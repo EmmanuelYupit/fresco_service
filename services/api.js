@@ -19,11 +19,18 @@ export default {
         byId: (productId) => get(`/product/${productId}`),
     },
     order: {
+        byId: (id) => get(`/order/${id}`),
         add: (params) => {
             axios.defaults.headers.common[
                 'Authorization'
             ] = `Bearer ${global.auth.token}`;
             return post(`/order`, params);
+        },
+        addProduct: (id, params) => {
+            axios.defaults.headers.common[
+                'Authorization'
+            ] = `Bearer ${global.auth.token}`;
+            return post(`/order/${id}`, params);
         },
     },
 };
