@@ -1,4 +1,5 @@
 import axios from 'axios';
+import global from '../store/global';
 
 const API_URL = 'https://fresco.herokuapp.com/api/v1';
 
@@ -18,6 +19,11 @@ export default {
         byId: (productId) => get(`/product/${productId}`),
     },
     order: {
-        add: (params) => post(`/order`, params),
+        add: (params) => {
+            axios.defaults.headers.common[
+                'Authorization'
+            ] = `Bearer ${global.auth.token}`;
+            return post(`/order`, params);
+        },
     },
 };

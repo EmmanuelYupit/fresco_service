@@ -17,8 +17,8 @@ import global from './store/global';
 const Stack = createStackNavigator();
 
 export default function App(props) {
-    global.order = useOrder();
     global.auth = useToken();
+    global.order = useOrder();
     const isLoadingComplete = useCachedResources();
     const MyTheme = {
         ...DefaultTheme,

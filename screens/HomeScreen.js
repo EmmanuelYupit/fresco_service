@@ -1,6 +1,5 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useEffect } from 'react';
-import api from '../services/api';
 import global from '../store/global';
 import {
     Image,
@@ -19,6 +18,7 @@ import productImage from '../components/product/Image.js';
 
 const width = Dimensions.get('window').width;
 
+import api from '../services/api';
 export default function HomeScreen({ navigation }) {
     const [products, setProducts] = useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
@@ -43,16 +43,13 @@ export default function HomeScreen({ navigation }) {
 
     async function getProducts() {
         setRefreshing(true);
-        await login();
+        if (global.auth.token === '') {
+            await login();
+        }
         const { data } = await api.product.list();
         setProducts(data);
         setRefreshing(false);
     }
-
-    console.log('====================================');
-    console.log('new order home: ', global.order.current);
-    console.log('token: ', global.auth.token);
-    console.log('====================================');
 
     function _renderItemFood(item) {
         const { id } = item;
