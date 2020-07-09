@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import global from '../store/global';
 
 import {
@@ -12,37 +12,32 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { RectButton, ScrollView, FlatList } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Ionicons';
+import productImage from '../components/product/Image.js';
 
 const { height, width } = Dimensions.get('window');
 
 export default function CartScreen({ navigation }) {
-    const [products, setProducts] = React.useState([
-        {
-            id: 1,
-            src: require('../assets/images/products/aguacate.png'),
-            name: 'Aguacate',
-            price: 25.5,
-        },
-        {
-            id: 2,
-            src: require('../assets/images/products/aguacate.png'),
-            name: 'Limon',
-            price: 10.5,
-        },
-        {
-            id: 3,
-            src: require('../assets/images/products/aguacate.png'),
-            name: 'Cebolla Morada',
-            price: 25.5,
-        },
-    ]);
+    const [products, setProducts] = useState([]);
 
-    console.log('====================================');
-    console.log('new order cart screen: ', global.order.current);
-    console.log('====================================');
+    useEffect(() => {
+        const { orderProducts } = global.order.current;
+        setProducts(orderProducts);
+    }, []);
 
-    function _renderItemFood(item) {
+    function getOrderTotal() {
+        return global.order.current.id
+            ? products.reduce((total, { totalPrice }) => total + totalPrice, 0)
+            : 0;
+    }
+
+    function onConfirm() {
+        navigation.navigate('Información de entrega', {
+            total: getOrderTotal(),
+        });
+    }
+
+    function _renderItemFood({ id, amount, totalPrice, product }) {
+        const { name, imageUrl, description } = product;
         return (
             <View
                 style={{
@@ -54,11 +49,12 @@ export default function CartScreen({ navigation }) {
                     borderColor: '#cccccc',
                     paddingBottom: 10,
                 }}
+                key={id}
             >
                 <Image
                     resizeMode={'contain'}
                     style={{ width: width / 3, height: width / 3 }}
-                    source={require('../assets/images/products/aguacate.png')}
+                    source={productImage(imageUrl)}
                 />
                 <View
                     style={{
@@ -70,9 +66,9 @@ export default function CartScreen({ navigation }) {
                 >
                     <View>
                         <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                            {item.name}
+                            {name}
                         </Text>
-                        <Text>Descripcion de food</Text>
+                        <Text>{description}</Text>
                     </View>
                     <View
                         style={{
@@ -87,7 +83,7 @@ export default function CartScreen({ navigation }) {
                                 fontSize: 20,
                             }}
                         >
-                            $565
+                            ${totalPrice}
                         </Text>
                         <View
                             style={{
@@ -101,7 +97,7 @@ export default function CartScreen({ navigation }) {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                5 kilos
+                                {amount} kilos
                             </Text>
                         </View>
                     </View>
@@ -125,7 +121,8 @@ export default function CartScreen({ navigation }) {
             <View style={{ height: 20 }} />
 
             <TouchableOpacity
-                onPress={() => navigation.push('Información de entrega')}
+                disabled={global.order.current.id ? false : true}
+                onPress={onConfirm}
                 style={{
                     backgroundColor: '#9fd236',
                     width: width - 40,
@@ -141,30 +138,12 @@ export default function CartScreen({ navigation }) {
                         color: 'white',
                     }}
                 >
-                    COMPRAR $500
+                    COMPRAR ${getOrderTotal()}
                 </Text>
             </TouchableOpacity>
 
             <View style={{ height: 20 }} />
         </View>
-    );
-}
-
-function OptionButton({ icon, label, onPress, isLastOption }) {
-    return (
-        <RectButton
-            style={[styles.option, isLastOption && styles.lastOption]}
-            onPress={onPress}
-        >
-            <View style={{ flexDirection: 'row' }}>
-                <View style={styles.optionIconContainer}>
-                    <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
-                </View>
-                <View style={styles.optionTextContainer}>
-                    <Text style={styles.optionText}>{label}</Text>
-                </View>
-            </View>
-        </RectButton>
     );
 }
 

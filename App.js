@@ -7,7 +7,6 @@ import useCachedResources from './hooks/useCachedResources';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
 import ProductDetail from './screens/ProductDetail';
-import { Details } from './screens/Product';
 import Deliver from './screens/DeliverInfo';
 
 import useOrder from './store/use.order';
@@ -47,7 +46,6 @@ export default function App(props) {
                             component={BottomTabNavigator}
                         />
                         <Stack.Screen name="Detail" component={ProductDetail} />
-                        <Stack.Screen name="Details" component={Details} />
                         <Stack.Screen
                             name="Información de entrega"
                             component={Deliver}
