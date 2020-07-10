@@ -1,8 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import global from '../store/global';
-
+import { useFocusEffect } from '@react-navigation/native';
 import {
     StyleSheet,
     Text,
@@ -19,21 +17,24 @@ const { height, width } = Dimensions.get('window');
 export default function CartScreen({ navigation }) {
     const [products, setProducts] = useState([]);
 
-    useEffect(() => {
+    useFocusEffect(
+        useCallback(() => {
+            getProducts();
+            return () => {
+                getProducts();
+            };
+        }, [products])
+    );
+
+    function getProducts() {
         const { orderProducts } = global.order.current;
         setProducts(orderProducts);
-    }, []);
+    }
 
     function getOrderTotal() {
         return global.order.current.id
             ? products.reduce((total, { totalPrice }) => total + totalPrice, 0)
             : 0;
-    }
-
-    function onConfirm() {
-        navigation.navigate('Información de entrega', {
-            total: getOrderTotal(),
-        });
     }
 
     function _renderItemFood({ id, amount, totalPrice, product }) {
@@ -121,8 +122,11 @@ export default function CartScreen({ navigation }) {
             <View style={{ height: 20 }} />
 
             <TouchableOpacity
-                disabled={global.order.current.id ? false : true}
-                onPress={onConfirm}
+                onPress={() =>
+                    navigation.navigate('Información de entrega', {
+                        total: getOrderTotal(),
+                    })
+                }
                 style={{
                     backgroundColor: '#9fd236',
                     width: width - 40,

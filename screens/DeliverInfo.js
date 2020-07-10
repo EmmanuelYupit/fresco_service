@@ -24,6 +24,8 @@ export default function Deliver() {
         extraComments: '',
     });
 
+    const { phone, direction, postalCode, extraComments } = deliveryAddress;
+
     function getTotal() {
         const { orderProducts } = global.order.current;
         return orderProducts.reduce(
@@ -41,12 +43,10 @@ export default function Deliver() {
     return (
         <View style={{ flex: 1, alignItems: 'center', paddingTop: 20 }}>
             <View style={{ width: 300 }}>
-                <TextInput placeholder="Código Postal" />
-                <TextInput placeholder="Delegación" />
-                <TextInput placeholder="Dirección" />
-                <TextInput placeholder="Referencia" />
-                <TextInput placeholder="Teléfono" />
-                <TextInput placeholder="Nombre" />
+                <TextInput value={postalCode} placeholder="Código Postal" />
+                <TextInput value={direction} placeholder="Dirección" />
+                <TextInput value={phone} placeholder="Teléfono" />
+                <TextInput value={extraComments} placeholder="Referencia" />
             </View>
             <View style={{ height: 20 }} />
             <TouchableOpacity

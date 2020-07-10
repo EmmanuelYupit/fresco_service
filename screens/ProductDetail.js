@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import api from '../services/api';
 import {
     StyleSheet,
@@ -11,7 +10,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from 'react-native';
-
+import { useFocusEffect } from '@react-navigation/native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import productImage from '../components/product/Image';
@@ -25,9 +24,14 @@ export default function ProductDetail({ route, navigation }) {
     const [isLoading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
 
-    useEffect(() => {
-        getDetail();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            getDetail();
+            return () => {
+                getDetail();
+            };
+        }, [])
+    );
 
     async function getDetail() {
         setLoading(true);
