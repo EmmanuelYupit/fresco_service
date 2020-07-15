@@ -122,6 +122,7 @@ export default function CartScreen({ navigation }) {
             <View style={{ height: 20 }} />
 
             <TouchableOpacity
+                disabled={global.order.current.id ? false : true}
                 onPress={() =>
                     navigation.navigate('Información de entrega', {
                         total: getOrderTotal(),

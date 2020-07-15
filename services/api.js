@@ -32,5 +32,11 @@ export default {
             ] = `Bearer ${global.auth.token}`;
             return post(`/order/${id}`, params);
         },
+        deliver: (id, params) => {
+            axios.defaults.headers.common[
+                'Authorization'
+            ] = `Bearer ${global.auth.token}`;
+            return post(`/order/${id}/deliver`, params);
+        },
     },
 };

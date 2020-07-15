@@ -1,30 +1,31 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
 import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     Dimensions,
-    Image,
+    ActivityIndicator,
     TouchableOpacity,
     TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import api from '../services/api';
 import global from '../store/global';
 
 const { height, width } = Dimensions.get('window');
 
-export default function Deliver() {
+export default function Deliver({ navigation }) {
     const [deliveryAddress, setDeliveryAddres] = useState({
-        order: global.order.current.id,
         phone: '',
         direction: '',
         postalCode: '',
-        extraComments: '',
+        comments: '',
+        latitude: 86,
+        longitude: 150,
     });
+    const [isLoading, setLoading] = useState(false);
 
-    const { phone, direction, postalCode, extraComments } = deliveryAddress;
+    const { phone, direction, postalCode, comments } = deliveryAddress;
 
     function getTotal() {
         const { orderProducts } = global.order.current;
@@ -34,19 +35,70 @@ export default function Deliver() {
         );
     }
 
-    function onSubmit() {}
-
-    function onChange(e) {
-        const { target, text } = e;
-        setDeliveryAddres({ ...deliveryAddress, [target]: text });
+    async function onSubmit() {
+        setLoading(true);
+        try {
+            const order = await deliver();
+            global.order.set(order);
+            setLoading(false);
+            navigation.navigate('Productos');
+        } catch (err) {
+            console.log(err);
+            setLoading(false);
+        }
     }
-    return (
+
+    async function deliver() {
+        await api.order.deliver(global.order.current.id, deliveryAddress);
+        const { data } = await api.order.byId(global.order.current.id);
+        return data;
+    }
+
+    function onChange(name, value) {
+        setDeliveryAddres({ ...deliveryAddress, [name]: value });
+    }
+
+    return isLoading ? (
+        <View
+            style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+    ) : (
         <View style={{ flex: 1, alignItems: 'center', paddingTop: 20 }}>
             <View style={{ width: 300 }}>
-                <TextInput value={postalCode} placeholder="Código Postal" />
-                <TextInput value={direction} placeholder="Dirección" />
-                <TextInput value={phone} placeholder="Teléfono" />
-                <TextInput value={extraComments} placeholder="Referencia" />
+                <TextInput
+                    keyboardType="numeric"
+                    maxLength={5}
+                    style={styles.input}
+                    value={postalCode}
+                    placeholder="Código Postal"
+                    onChangeText={(value) => onChange('postalCode', value)}
+                />
+                <TextInput
+                    style={styles.input}
+                    value={direction}
+                    placeholder="Dirección"
+                    onChangeText={(value) => onChange('direction', value)}
+                />
+                <TextInput
+                    keyboardType="numeric"
+                    maxLength={10}
+                    style={styles.input}
+                    value={phone}
+                    placeholder="Teléfono"
+                    onChangeText={(value) => onChange('phone', value)}
+                />
+                <TextInput
+                    style={styles.input}
+                    value={comments}
+                    placeholder="Referencia"
+                    onChangeText={(value) => onChange('comments', value)}
+                />
             </View>
             <View style={{ height: 20 }} />
             <TouchableOpacity
@@ -79,5 +131,12 @@ const styles = StyleSheet.create({
         marginTop: 50,
         padding: 20,
         backgroundColor: '#ffffff',
+    },
+    input: {
+        height: 50,
+        backgroundColor: '#fff',
+        // borderColor: 'gray',
+        // borderWidth: 1,
+        marginTop: 5,
     },
 });
