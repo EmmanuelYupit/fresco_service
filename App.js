@@ -8,6 +8,7 @@ import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
 import ProductDetail from './screens/ProductDetail';
 import Deliver from './screens/DeliverInfo';
+import Payment from './screens/Payment';
 
 import useOrder from './store/use.order';
 import useToken from './store/use.auth';
@@ -49,6 +50,10 @@ export default function App(props) {
                         <Stack.Screen
                             name="Información de entrega"
                             component={Deliver}
+                        />
+                        <Stack.Screen
+                            name="Forma de pago"
+                            component={Payment}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

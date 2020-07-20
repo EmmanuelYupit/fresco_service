@@ -41,7 +41,7 @@ export default function Deliver({ navigation }) {
             const order = await deliver();
             global.order.set(order);
             setLoading(false);
-            navigation.navigate('Productos');
+            navigation.navigate('Forma de pago', { getTotal: getTotal() });
         } catch (err) {
             console.log(err);
             setLoading(false);
@@ -70,7 +70,7 @@ export default function Deliver({ navigation }) {
         </View>
     ) : (
         <View style={{ flex: 1, alignItems: 'center', paddingTop: 20 }}>
-            <View style={{ width: 300 }}>
+            <View style={{ width: '90%' }}>
                 <TextInput
                     keyboardType="numeric"
                     maxLength={5}
@@ -104,7 +104,7 @@ export default function Deliver({ navigation }) {
             <TouchableOpacity
                 style={{
                     backgroundColor: '#9fd236',
-                    width: width - 40,
+                    width: '90%',
                     alignItems: 'center',
                     padding: 10,
                     borderRadius: 5,
