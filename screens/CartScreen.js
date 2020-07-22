@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     Modal,
     TouchableHighlight,
+    ActivityIndicator,
 } from 'react-native';
 import { RectButton, ScrollView, FlatList } from 'react-native-gesture-handler';
 import productImage from '../components/product/Image.js';
@@ -22,6 +23,7 @@ export default function CartScreen({ navigation }) {
     const [products, setProducts] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [orderProductId, setorderProductId] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
@@ -45,10 +47,12 @@ export default function CartScreen({ navigation }) {
 
     async function onRemove() {
         try {
+            setLoading(true);
             const order = await remove();
             global.order.set(order);
             setModalVisible(!modalVisible);
             getProducts();
+            setLoading(false);
         } catch (err) {
             console.log('====================================');
             console.log(err);
@@ -177,7 +181,21 @@ export default function CartScreen({ navigation }) {
             </View>
         );
     }
-    return (
+    return isLoading ? (
+        <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <ActivityIndicator size="large" color="#82749a" />
+            </View>
+        </View>
+    ) : (
         <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
