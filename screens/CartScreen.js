@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import global from '../store/global';
+import api from '../services/api';
 import { useFocusEffect } from '@react-navigation/native';
 import {
     StyleSheet,
@@ -20,6 +21,7 @@ const { height, width } = Dimensions.get('window');
 export default function CartScreen({ navigation }) {
     const [products, setProducts] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
+    const [orderProductId, setorderProductId] = useState(null);
 
     useFocusEffect(
         useCallback(() => {
@@ -41,15 +43,27 @@ export default function CartScreen({ navigation }) {
             : 0;
     }
 
+    async function onRemove() {
+        try {
+            const order = await remove();
+            global.order.set(order);
+            setModalVisible(!modalVisible);
+            getProducts();
+        } catch (err) {
+            console.log('====================================');
+            console.log(err);
+            console.log('====================================');
+        }
+    }
+
+    async function remove() {
+        await api.order.deleteProduct(global.order.current.id, orderProductId);
+        const { data } = await api.order.byId(global.order.current.id);
+        return data;
+    }
+
     const DecideModal = (props) => (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-            }}
-        >
+        <Modal animationType="slide" transparent={true} visible={modalVisible}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Text style={styles.modalText}>
@@ -62,9 +76,7 @@ export default function CartScreen({ navigation }) {
                             backgroundColor: 'red',
                             marginBottom: 15,
                         }}
-                        onPress={() => {
-                            setModalVisible(!modalVisible);
-                        }}
+                        onPress={() => onRemove()}
                     >
                         <Text style={{ color: '#fff' }}>Eliminar</Text>
                     </TouchableHighlight>
@@ -141,6 +153,7 @@ export default function CartScreen({ navigation }) {
                 >
                     <TouchableOpacity
                         onPress={() => {
+                            setorderProductId(id);
                             setModalVisible(!modalVisible);
                         }}
                     >

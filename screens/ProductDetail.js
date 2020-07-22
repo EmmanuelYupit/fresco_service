@@ -97,7 +97,7 @@ export default function ProductDetail({ route, navigation }) {
                         alignItems: 'center',
                     }}
                 >
-                    <ActivityIndicator size="large" color="#0000ff" />
+                    <ActivityIndicator size="large" color="#82749a" />
                 </View>
             ) : (
                 <>

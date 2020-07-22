@@ -32,6 +32,16 @@ export default {
             ] = `Bearer ${global.auth.token}`;
             return post(`/order/${id}`, params);
         },
+        deleteProduct: (id, orderProductId) => {
+            return axios.delete(`/order/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${global.auth.token}`,
+                },
+                data: {
+                    orderProductId,
+                },
+            });
+        },
         deliver: (id, params) => {
             axios.defaults.headers.common[
                 'Authorization'

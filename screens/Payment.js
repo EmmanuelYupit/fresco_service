@@ -29,7 +29,7 @@ const Payment = ({ navigation, route }) => {
                 alignItems: 'center',
             }}
         >
-            <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator size="large" color="#82749a" />
         </View>
     ) : (
         <View style={{ flex: 1, alignItems: 'center', paddingTop: 20 }}>
