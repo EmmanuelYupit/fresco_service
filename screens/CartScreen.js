@@ -8,14 +8,18 @@ import {
     Dimensions,
     Image,
     TouchableOpacity,
+    Modal,
+    TouchableHighlight,
 } from 'react-native';
 import { RectButton, ScrollView, FlatList } from 'react-native-gesture-handler';
 import productImage from '../components/product/Image.js';
+import { Ionicons } from '@expo/vector-icons';
 
 const { height, width } = Dimensions.get('window');
 
 export default function CartScreen({ navigation }) {
     const [products, setProducts] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     useFocusEffect(
         useCallback(() => {
@@ -36,6 +40,46 @@ export default function CartScreen({ navigation }) {
             ? products.reduce((total, { totalPrice }) => total + totalPrice, 0)
             : 0;
     }
+
+    const DecideModal = (props) => (
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+            }}
+        >
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalText}>
+                        ¿Desea eliminar este elemento de su carrito?
+                    </Text>
+
+                    <TouchableHighlight
+                        style={{
+                            ...styles.openButton,
+                            backgroundColor: 'red',
+                            marginBottom: 15,
+                        }}
+                        onPress={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <Text style={{ color: '#fff' }}>Eliminar</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={{}}
+                        onPress={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <Text>Cancelar</Text>
+                    </TouchableHighlight>
+                </View>
+            </View>
+        </Modal>
+    );
 
     function _renderItemFood({ id, amount, totalPrice, product }) {
         const { name, imageUrl, description } = product;
@@ -86,22 +130,36 @@ export default function CartScreen({ navigation }) {
                         >
                             ${totalPrice}
                         </Text>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    paddingHorizontal: 8,
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                {amount} kilos
-                            </Text>
-                        </View>
                     </View>
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={() => {
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <Ionicons
+                            name="md-trash"
+                            size={30}
+                            style={{ marginTop: '60%' }}
+
+                            //   color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+                        />
+                    </TouchableOpacity>
+                    <Text
+                        style={{
+                            paddingHorizontal: 8,
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        {amount} kilos
+                    </Text>
                 </View>
             </View>
         );
@@ -110,6 +168,7 @@ export default function CartScreen({ navigation }) {
         <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
+            <DecideModal />
             <View style={{ flex: 1 }}>
                 <FlatList
                     //horizontal={true}
@@ -178,5 +237,41 @@ const styles = StyleSheet.create({
         fontSize: 15,
         alignSelf: 'flex-start',
         marginTop: 1,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    openButton: {
+        backgroundColor: '#F194FF',
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
     },
 });

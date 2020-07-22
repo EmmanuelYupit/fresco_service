@@ -47,7 +47,7 @@ const Payment = ({ navigation, route }) => {
                                 index={i}
                                 isSelected={payment === i}
                                 borderWidth={2}
-                                buttonInnerColor={'#2196f3'}
+                                buttonInnerColor={'#82749a'}
                                 buttonOuterColor={'#000'}
                                 buttonSize={30}
                                 buttonOuterSize={40}

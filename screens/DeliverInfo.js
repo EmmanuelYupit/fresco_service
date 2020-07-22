@@ -69,7 +69,7 @@ export default function Deliver({ navigation }) {
             <ActivityIndicator size="large" color="#0000ff" />
         </View>
     ) : (
-        <View style={{ flex: 1, alignItems: 'center', paddingTop: 20 }}>
+        <View style={{ flex: 1, alignItems: 'center', paddingTop: 25 }}>
             <View style={{ width: '90%' }}>
                 <TextInput
                     keyboardType="numeric"
@@ -136,7 +136,10 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#fff',
         // borderColor: 'gray',
-        // borderWidth: 1,
-        marginTop: 5,
+        borderWidth: 2,
+        marginTop: 10,
+        borderRadius: 5,
+        borderColor: '#82749a',
+        paddingHorizontal: 10,
     },
 });
