@@ -71,27 +71,34 @@ export default function CartScreen({ navigation }) {
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Text style={styles.modalText}>
-                        ¿Desea eliminar este elemento de su carrito?
+                        ¿Estás seguro de querer eliminar este artículo?
                     </Text>
-
-                    <TouchableHighlight
-                        style={{
-                            ...styles.openButton,
-                            backgroundColor: 'red',
-                            marginBottom: 15,
-                        }}
-                        onPress={() => onRemove()}
-                    >
-                        <Text style={{ color: '#fff' }}>Eliminar</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        style={{}}
-                        onPress={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        <Text>Cancelar</Text>
-                    </TouchableHighlight>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableHighlight
+                            style={{
+                                ...styles.openButtonCancel,
+                                marginRight: 15,
+                            }}
+                            onPress={() => {
+                                setModalVisible(!modalVisible);
+                            }}
+                        >
+                            <Text style={{ color: '#000', fontWeight: 'bold' }}>
+                                Cancelar
+                            </Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            style={{
+                                ...styles.openButton,
+                                backgroundColor: '#cccccc',
+                            }}
+                            onPress={() => onRemove()}
+                        >
+                            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                                Aceptar
+                            </Text>
+                        </TouchableHighlight>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -183,17 +190,13 @@ export default function CartScreen({ navigation }) {
     }
     return isLoading ? (
         <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
         >
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <ActivityIndicator size="large" color="#82749a" />
-            </View>
+            <ActivityIndicator size="large" color="#82749a" />
         </View>
     ) : (
         <View
@@ -277,8 +280,8 @@ const styles = StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
+        backgroundColor: '#fff',
+        borderRadius: 5,
         padding: 35,
         alignItems: 'center',
         shadowColor: '#000',
@@ -292,9 +295,21 @@ const styles = StyleSheet.create({
     },
     openButton: {
         backgroundColor: '#F194FF',
-        borderRadius: 20,
+        borderRadius: 5,
         padding: 10,
         elevation: 2,
+        width: '40%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    openButtonCancel: {
+        borderRadius: 5,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        width: '40%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     textStyle: {
         color: 'white',

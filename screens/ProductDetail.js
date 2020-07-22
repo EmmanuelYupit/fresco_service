@@ -83,165 +83,159 @@ export default function ProductDetail({ route, navigation }) {
         return data;
     }
 
-    return (
+    return isLoading ? (
         <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-            <View style={{ height: 20 }} />
-            <View style={{ height: 10 }} />
-            {isLoading ? (
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <ActivityIndicator size="large" color="#82749a" />
-                </View>
-            ) : (
-                <>
-                    <View style={{ flex: 1 }}>
+            <ActivityIndicator size="large" color="#82749a" />
+        </View>
+    ) : (
+        <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+            <>
+                <View style={{ height: 20 }} />
+                <View style={{ height: 10 }} />
+                <View style={{ flex: 1 }}>
+                    <View
+                        style={{
+                            width: width - 20,
+                            margin: 10,
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                            borderColor: '#cccccc',
+                        }}
+                    >
+                        <Image
+                            resizeMode={'contain'}
+                            style={{ width: width / 2, height: width / 3 }}
+                            source={productImage(detail.product.imageUrl)}
+                        />
                         <View
                             style={{
-                                width: width - 20,
-                                margin: 10,
+                                flex: 1,
                                 backgroundColor: 'transparent',
-                                flexDirection: 'row',
-                                borderColor: '#cccccc',
+                                padding: 10,
+                                justifyContent: 'space-between',
                             }}
                         >
-                            <Image
-                                resizeMode={'contain'}
-                                style={{ width: width / 2, height: width / 3 }}
-                                source={productImage(detail.product.imageUrl)}
-                            />
-                            <View
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: 'transparent',
-                                    padding: 10,
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <View>
-                                    <Text
-                                        style={{
-                                            fontWeight: 'bold',
-                                            fontSize: 40,
-                                        }}
-                                    >
-                                        ${detail.price}
-                                    </Text>
-                                    <Text
-                                        style={{
-                                            fontWeight: 'bold',
-                                            fontSize: 20,
-                                        }}
-                                    >
-                                        {detail.unitType}
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                width: width - 20,
-                                margin: 10,
-                                backgroundColor: 'transparent',
-                                flexDirection: 'row',
-                                paddingBottom: 10,
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontWeight: 'bold',
-                                    fontSize: 30,
-                                    textAlign: 'center',
-                                }}
-                            >
-                                {detail.product.description}
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                alignItems: 'center',
-                            }}
-                        >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <TouchableOpacity
-                                    onPress={() => handleQuantity('substract')}
-                                >
-                                    <Icon
-                                        name="ios-remove-circle"
-                                        size={40}
-                                        color={'#9fd236'}
-                                    />
-                                </TouchableOpacity>
+                            <View>
                                 <Text
                                     style={{
-                                        paddingHorizontal: 8,
                                         fontWeight: 'bold',
-                                        fontSize: 30,
+                                        fontSize: 40,
                                     }}
                                 >
-                                    {quantity} {quantity > 1 ? 'kilos' : 'kilo'}
+                                    ${detail.price}
                                 </Text>
-                                <TouchableOpacity
-                                    onPress={() => handleQuantity('add')}
+                                <Text
+                                    style={{
+                                        fontWeight: 'bold',
+                                        fontSize: 20,
+                                    }}
                                 >
-                                    <Icon
-                                        name="ios-add-circle"
-                                        size={40}
-                                        color={'#9fd236'}
-                                    />
-                                </TouchableOpacity>
+                                    {detail.unitType}
+                                </Text>
                             </View>
                         </View>
-
-                        <View style={{ alignItems: 'center' }}>
-                            <Text
-                                style={{
-                                    fontWeight: 'bold',
-                                    color: '#9fd236',
-                                    fontSize: 40,
-                                    alignItems: 'center',
-                                }}
-                            >
-                                ${quantity * detail.price} Total
-                            </Text>
-                        </View>
                     </View>
-
-                    <TouchableOpacity
+                    <View
                         style={{
-                            backgroundColor: '#9fd236',
-                            width: width - 40,
-                            alignItems: 'center',
-                            padding: 10,
-                            borderRadius: 5,
+                            width: width - 20,
+                            margin: 10,
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                            paddingBottom: 10,
                         }}
-                        onPress={() => addToCart()}
                     >
                         <Text
                             style={{
-                                fontSize: 24,
                                 fontWeight: 'bold',
-                                color: 'white',
+                                fontSize: 30,
+                                textAlign: 'center',
                             }}
                         >
-                            Agregar al carrito
+                            {detail.product.description}
                         </Text>
-                    </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            alignItems: 'center',
+                        }}
+                    >
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={() => handleQuantity('substract')}
+                            >
+                                <Icon
+                                    name="ios-remove-circle"
+                                    size={40}
+                                    color={'#9fd236'}
+                                />
+                            </TouchableOpacity>
+                            <Text
+                                style={{
+                                    paddingHorizontal: 8,
+                                    fontWeight: 'bold',
+                                    fontSize: 30,
+                                }}
+                            >
+                                {quantity} {quantity > 1 ? 'kilos' : 'kilo'}
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => handleQuantity('add')}
+                            >
+                                <Icon
+                                    name="ios-add-circle"
+                                    size={40}
+                                    color={'#9fd236'}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
 
-                    <View style={{ height: 20 }} />
-                </>
-            )}
+                    <View style={{ alignItems: 'center' }}>
+                        <Text
+                            style={{
+                                fontWeight: 'bold',
+                                color: '#9fd236',
+                                fontSize: 40,
+                                alignItems: 'center',
+                            }}
+                        >
+                            ${quantity * detail.price} Total
+                        </Text>
+                    </View>
+                </View>
+
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: '#9fd236',
+                        width: width - 40,
+                        alignItems: 'center',
+                        padding: 10,
+                        borderRadius: 5,
+                    }}
+                    onPress={() => addToCart()}
+                >
+                    <Text
+                        style={{
+                            fontSize: 24,
+                            fontWeight: 'bold',
+                            color: 'white',
+                        }}
+                    >
+                        Agregar al carrito
+                    </Text>
+                </TouchableOpacity>
+
+                <View style={{ height: 20 }} />
+            </>
         </View>
     );
 }
