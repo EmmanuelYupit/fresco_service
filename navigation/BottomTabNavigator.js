@@ -14,7 +14,10 @@ export default function BottomTabNavigator({ navigation, route }) {
     // currently active tab. Learn more in the documentation:
     // https://reactnavigation.org/docs/en/screen-options-resolution.html
 
-    navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+    navigation.setOptions({
+        headerTitle: getHeaderTitle(route),
+        headerTitleStyle: { textAlign: 'center' },
+    });
 
     return (
         <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
@@ -63,6 +66,6 @@ function getHeaderTitle(route) {
         case 'ProductDetail':
             return 'ProductDetail';
         case 'OrderState':
-            return 'Estado de la orden';
+            return 'Mi orden';
     }
 }
