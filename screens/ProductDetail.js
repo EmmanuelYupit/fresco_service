@@ -85,7 +85,11 @@ export default function ProductDetail({ route, navigation }) {
 
     return isLoading ? (
         <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
         >
             <ActivityIndicator size="large" color="#82749a" />
         </View>

@@ -34,6 +34,17 @@ export default function CartScreen({ navigation }) {
         }, [products])
     );
 
+    function hasDeliveryAddres() {
+        const order = global.order.current;
+        if (order.orderDeliver) {
+            navigation.navigate('Forma de pago', { getTotal: getOrderTotal() });
+        } else {
+            navigation.navigate('Información de entrega', {
+                total: getOrderTotal(),
+            });
+        }
+    }
+
     function getProducts() {
         const { orderProducts } = global.order.current;
         setProducts(orderProducts);
@@ -216,11 +227,7 @@ export default function CartScreen({ navigation }) {
 
             <TouchableOpacity
                 disabled={global.order.current.id ? false : true}
-                onPress={() =>
-                    navigation.navigate('Información de entrega', {
-                        total: getOrderTotal(),
-                    })
-                }
+                onPress={hasDeliveryAddres}
                 style={{
                     backgroundColor: '#9fd236',
                     width: width - 40,

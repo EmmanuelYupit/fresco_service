@@ -1,5 +1,4 @@
-import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import global from '../store/global';
 import {
     StyleSheet,
@@ -123,7 +122,11 @@ export default function OrderStateScreen() {
                         Incididunt sunt magna est tempor qui consequat. Est
                         labore non ea non. Enim duis amet dolore id. Incididunt
                         sunt magna est tempor qui consequat. Est labore non ea
-                        non. Enim duis amet dolore id.
+                        non. Enim duis amet dolore id. Incididunt sunt magna est
+                        tempor qui consequat. Est labore non ea non. Enim duis
+                        amet dolore id. Incididunt sunt magna est tempor qui
+                        consequat. Est labore non ea non. Enim duis amet dolore
+                        id.
                     </Text>
                 </View>
                 <View
